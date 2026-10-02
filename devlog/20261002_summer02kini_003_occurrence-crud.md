@@ -1,6 +1,6 @@
 # 산출을 넣고 고치는 화면
 
-2026-10-02 · `feature/occurrence-crud` · koprifossillab
+2026-10-02 · `feature/occurrence-crud` · summer02kini
 
 ## 왜
 

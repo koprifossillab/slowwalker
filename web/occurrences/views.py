@@ -1,18 +1,18 @@
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import connection
+from django.db import connection, transaction
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import generic
 
 from slowwalkerweb.version import VERSION
 
-from .forms import OccurrenceForm, TaxonForm
-from .models import Occurrence, Taxon
+from .forms import OccurrenceForm, PhotoFormSet, TaxonForm
+from .models import Occurrence, Photo, Taxon
 
 
 def map_view(request):
@@ -26,7 +26,7 @@ def occurrences_geojson(request):
     `?taxon=<id>` 로 분류군 하나만 거른다. 기록이 수만 개를 넘으면 범위(bbox)로 자르는
     것을 더한다 — 지금은 통째로 낸다.
     """
-    qs = Occurrence.objects.select_related("taxon")
+    qs = Occurrence.objects.select_related("taxon").prefetch_related("photos")
     taxon = request.GET.get("taxon")
     if taxon:
         if not taxon.isdigit():
@@ -102,10 +102,20 @@ class OccurrenceList(generic.ListView):
 class OccurrenceDetail(generic.DetailView):
     model = Occurrence
     template_name = "occurrences/occurrence_detail.html"
-    queryset = Occurrence.objects.select_related("taxon")
+    queryset = Occurrence.objects.select_related("taxon").prefetch_related("photos")
 
 
-class OccurrenceCreate(EditPermission, generic.CreateView):
+class SavesPhotos:
+    """넣기·고치기가 함께 쓴다 — 양식의 `new_photos` 를 사진 줄로 만든다."""
+
+    def save_new_photos(self, form) -> int:
+        files = form.cleaned_data.get("new_photos") or []
+        for f in files:
+            Photo.objects.create(occurrence=self.object, image=f)
+        return len(files)
+
+
+class OccurrenceCreate(EditPermission, SavesPhotos, generic.CreateView):
     model = Occurrence
     form_class = OccurrenceForm
     template_name = "occurrences/occurrence_form.html"
@@ -116,21 +126,40 @@ class OccurrenceCreate(EditPermission, generic.CreateView):
         return {"taxon": int(taxon)} if taxon.isdigit() else {}
 
     def form_valid(self, form):
-        messages.success(self.request, "산출을 넣었다.")
-        return super().form_valid(form)
+        with transaction.atomic():
+            self.object = form.save()
+            n = self.save_new_photos(form)
+        messages.success(self.request, f"산출을 넣었다{f' (사진 {n}장)' if n else ''}.")
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse("occurrences:detail", args=[self.object.pk])
 
 
-class OccurrenceUpdate(EditPermission, generic.UpdateView):
+class OccurrenceUpdate(EditPermission, SavesPhotos, generic.UpdateView):
+    """산출 칸과, 이미 붙은 사진(설명 고치기·빼기), 새 사진을 한 번에 저장한다."""
     model = Occurrence
     form_class = OccurrenceForm
     template_name = "occurrences/occurrence_form.html"
 
-    def form_valid(self, form):
-        messages.success(self.request, "산출을 고쳤다.")
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        kwargs.setdefault("photo_formset", PhotoFormSet(instance=self.object))
+        return super().get_context_data(**kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        formset = PhotoFormSet(request.POST, instance=self.object)
+        if not (form.is_valid() and formset.is_valid()):
+            return self.render_to_response(self.get_context_data(form=form, photo_formset=formset))
+        with transaction.atomic():
+            self.object = form.save()
+            formset.save()   # 뺀 사진은 여기서 지워지고, 파일은 post_delete 가 지운다
+            n = self.save_new_photos(form)
+        gone = len(formset.deleted_objects)
+        notes = [f"사진 {n}장 더함"] * bool(n) + [f"사진 {gone}장 뺌"] * bool(gone)
+        messages.success(self.request, f"산출을 고쳤다{f' ({', '.join(notes)})' if notes else ''}.")
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse("occurrences:detail", args=[self.object.pk])

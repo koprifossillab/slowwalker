@@ -1,6 +1,6 @@
 # 뼈대를 GSM 꼴로 세운다
 
-2026-10-02 · `main` · koprifossillab
+2026-10-02 · `main` · summer02kini
 
 ## 무엇을 본떴나
 

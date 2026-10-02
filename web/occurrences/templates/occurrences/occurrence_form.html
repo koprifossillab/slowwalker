@@ -5,7 +5,7 @@
 {% block content %}
 <h2>{% if object %}산출 #{{ object.pk }} 고치기{% else %}새 산출{% endif %}</h2>
 
-<form class="edit" method="post" novalidate>
+<form class="edit" method="post" enctype="multipart/form-data" novalidate>
   {% csrf_token %}
   {{ form.non_field_errors }}
 
@@ -39,6 +39,34 @@
       {% include "occurrences/_field.html" with field=form.event_date %}
       {% include "occurrences/_field.html" with field=form.recorded_by %}
     </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>사진</legend>
+    {% if photo_formset %}
+      {{ photo_formset.management_form }}
+      {{ photo_formset.non_form_errors }}
+      {% if photo_formset.forms %}
+      <div class="photo-edit">
+        {% for pf in photo_formset %}
+        <div class="photo-row">
+          {{ pf.id }}
+          <a href="{{ pf.instance.image.url }}" target="_blank" rel="noopener"><img src="{{ pf.instance.thumbnail.url }}" alt="{{ pf.instance.description|default:'사진' }}" loading="lazy"></a>
+          <div class="photo-fields">
+            {% include "occurrences/_field.html" with field=pf.description %}
+            <div class="grid2">
+              {% include "occurrences/_field.html" with field=pf.creator %}
+              {% include "occurrences/_field.html" with field=pf.license %}
+            </div>
+            <label class="remove">{{ pf.DELETE }} 이 사진을 뺀다</label>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endif %}
+    {% include "occurrences/_field.html" with field=form.new_photos %}
+    {% if not object %}<p class="help muted">사진마다 설명·찍은 이·이용 허락은 넣은 뒤 고치기 화면에서 적는다.</p>{% endif %}
   </fieldset>
 
   <fieldset>

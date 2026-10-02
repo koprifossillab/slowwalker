@@ -1,16 +1,22 @@
 # 바뀐 것
 
+## 0.3.0 — 2026-10-02
+
+- 산출에 사진을 여러 장 붙인다 — 넣을 때 여러 장을 한꺼번에, 고칠 때 장마다 설명·찍은 이·이용 허락을 적고 뺀다 (summer02kini 004)
+- 지도에서 점 위에 커서를 올리면 학명과 첫 사진이 작게 뜬다. 점을 누르면 팝업에도 사진이 실린다 (summer02kini 004)
+- 자세히 화면에 사진 모음. 산출을 지우면 사진 파일도 지운다 (summer02kini 004)
+
 ## 0.2.0 — 2026-10-02
 
-- 산출을 넣고·보고·고치고·지우는 화면 — 목록(찾기·분류군 거르기), 자세히, 입력·고치기(작은 지도를 눌러 위경도), 지우기 (koprifossillab 003)
-- 산출을 넣다가 분류군을 곧바로 더하는 화면 (koprifossillab 003)
-- 고치는 데 로그인을 묻는가를 `SLOWWALKER_EDIT_REQUIRES_LOGIN` 으로 정한다. 기본은 묻지 않는다(연구소 안 시험) (koprifossillab 003)
-- 모든 화면이 같은 머리줄을 쓰고, 지도 팝업에서 자세히로 간다 (koprifossillab 003)
+- 산출을 넣고·보고·고치고·지우는 화면 — 목록(찾기·분류군 거르기), 자세히, 입력·고치기(작은 지도를 눌러 위경도), 지우기 (summer02kini 003)
+- 산출을 넣다가 분류군을 곧바로 더하는 화면 (summer02kini 003)
+- 고치는 데 로그인을 묻는가를 `SLOWWALKER_EDIT_REQUIRES_LOGIN` 으로 정한다. 기본은 묻지 않는다(연구소 안 시험) (summer02kini 003)
+- 모든 화면이 같은 머리줄을 쓰고, 지도 팝업에서 자세히로 간다 (summer02kini 003)
 
 ## 0.1.1 — 2026-10-02
 
-- 배경지도를 OpenStreetMap 에서 EOX(지형 음영·Sentinel-2 위성)로 바꾸고 고르개를 둔다 (koprifossillab 002)
+- 배경지도를 OpenStreetMap 에서 EOX(지형 음영·Sentinel-2 위성)로 바꾸고 고르개를 둔다 (summer02kini 002)
 
 ## 0.1.0 — 2026-10-02
 
-- 뼈대: Django 5.2, 분류군·산출 모델, 관리 화면, 산출 GeoJSON, OpenLayers 세계지도, healthz (koprifossillab 001)
+- 뼈대: Django 5.2, 분류군·산출 모델, 관리 화면, 산출 GeoJSON, OpenLayers 세계지도, healthz (summer02kini 001)

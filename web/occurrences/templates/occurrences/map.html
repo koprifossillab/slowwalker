@@ -19,6 +19,7 @@
 {% block main %}
 <div id="map" data-geojson="{% url 'occurrences:geojson' %}" data-detail="{% url 'occurrences:detail' 0 %}"></div>
 <div id="popup" class="ol-popup" hidden></div>
+<div id="hover" class="hover-card" hidden></div>
 {% endblock %}
 {% block scripts %}
 <script src="{% static 'occurrences/vendor/ol.js' %}"></script>

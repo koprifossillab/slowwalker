@@ -1,6 +1,6 @@
 # 배경지도를 OSM 에서 EOX 로
 
-2026-10-02 · `feature/eox-basemap` · koprifossillab
+2026-10-02 · `feature/eox-basemap` · summer02kini
 
 ## 왜
 

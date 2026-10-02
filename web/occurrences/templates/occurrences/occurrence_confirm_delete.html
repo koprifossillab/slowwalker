@@ -10,7 +10,9 @@
     {% if object.event_date %}<dt>채집일</dt><dd>{{ object.event_date|date:"Y-m-d" }}</dd>{% endif %}
   </dl>
 </div>
-<p class="muted">지운 산출은 되살릴 수 없다. 분류군은 그대로 남는다.</p>
+{% with n=object.photos.count %}
+<p class="muted">지운 산출은 되살릴 수 없다.{% if n %} <strong>붙은 사진 {{ n }}장도 함께 지워진다.</strong>{% endif %} 분류군은 그대로 남는다.</p>
+{% endwith %}
 <form method="post" class="actions">
   {% csrf_token %}
   <button class="button danger" type="submit">지우기</button>
