@@ -1,0 +1,21 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>slowwalker — 완보동물 산출 지도</title>
+<link rel="stylesheet" href="{% static 'occurrences/vendor/ol.css' %}">
+<link rel="stylesheet" href="{% static 'occurrences/map.css' %}?v={{ version }}">
+</head>
+<body>
+<header id="bar">
+  <h1>slowwalker</h1>
+  <span id="count" aria-live="polite"></span>
+  <span class="ver">v{{ version }}</span>
+</header>
+<div id="map" data-geojson="{% url 'occurrences:geojson' %}"></div>
+<div id="popup" class="ol-popup" hidden></div>
+<script src="{% static 'occurrences/vendor/ol.js' %}"></script>
+<script src="{% static 'occurrences/map.js' %}?v={{ version }}"></script>
+</body>
+</html>

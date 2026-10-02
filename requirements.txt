@@ -1,0 +1,8 @@
+# slowwalker — 완보동물 산출 지도
+#
+# 호스트 venv 하나에 전부 까는 입구다. 컨테이너를 만들게 되면 requirements-web.txt 만 쓴다.
+#
+#   python -m venv .venv && . .venv/bin/activate
+#   pip install -r requirements.txt
+
+-r requirements-web.txt

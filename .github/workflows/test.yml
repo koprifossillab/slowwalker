@@ -1,0 +1,39 @@
+# 시험. GSM 의 `test.yml` 을 본떴다.
+name: 시험
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 시험
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install -r requirements-dev.txt
+
+      # 마이그레이션을 실제로 돌린다 — 빠뜨린 칸은 그래야 보인다.
+      - name: manage.py test
+        run: python web/manage.py test occurrences --verbosity 2
+        env:
+          SLOWWALKER_SECRET_KEY: ci-only-not-a-secret
+
+      - name: makemigrations --check
+        run: python web/manage.py makemigrations --check --dry-run
+        env:
+          SLOWWALKER_SECRET_KEY: ci-only-not-a-secret
+
+      - name: collectstatic
+        run: python web/manage.py collectstatic --noinput
+        env:
+          SLOWWALKER_SECRET_KEY: ci-only-not-a-secret

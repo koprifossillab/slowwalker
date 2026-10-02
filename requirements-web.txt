@@ -1,0 +1,9 @@
+# 서버(Django)가 쓰는 것만. GSM 의 requirements-web.txt 와 판을 맞췄다.
+#
+# GDAL·GeoDjango 가 여기 없는 것은 실수가 아니다 — 지도는 브라우저의 OpenLayers 가
+# 그리고, 서버는 산출 기록을 표로 들고 GeoJSON 으로 내줄 뿐이다. 범위·거리 질의 같은
+# 공간 연산이 필요해지면 그때 devlog 를 쓰고 더한다.
+
+Django==5.2.16
+whitenoise==6.8.2     # 정적 파일 서빙. DEBUG=0 이면 Django 가 안 내준다 (settings.py 의 주석)
+gunicorn==26.0.0      # 운영 서빙. 개발용 runserver 를 대신한다

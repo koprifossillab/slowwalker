@@ -1,0 +1,3 @@
+# 개발·시험에만 쓰는 것.
+
+-r requirements.txt

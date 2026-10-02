@@ -1,0 +1,9 @@
+# devlog 색인
+
+그때의 판단과 근거를 적는다 — 규약은 [CLAUDE.md](../CLAUDE.md) "devlog". **새 파일은 이 표에 한 줄씩 더한다.**
+
+## 목록
+
+| devlog | 날짜 | 제목 |
+|---|---|---|
+| koprifossillab 001 | 2026-10-02 | [뼈대를 GSM 꼴로 세운다](20261002_koprifossillab_001_skeleton.md) |
