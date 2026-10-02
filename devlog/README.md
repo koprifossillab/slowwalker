@@ -7,3 +7,4 @@
 | devlog | 날짜 | 제목 |
 |---|---|---|
 | koprifossillab 001 | 2026-10-02 | [뼈대를 GSM 꼴로 세운다](20261002_koprifossillab_001_skeleton.md) |
+| koprifossillab 002 | 2026-10-02 | [배경지도를 OSM 에서 EOX 로](20261002_koprifossillab_002_eox-basemap.md) |

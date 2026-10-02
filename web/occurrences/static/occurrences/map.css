@@ -8,8 +8,11 @@ html, body { margin: 0; height: 100%; font: 14px/1.4 "Pretendard", "Noto Sans KR
 body { display: flex; flex-direction: column; }
 #bar { display: flex; align-items: baseline; gap: 12px; padding: 8px 16px; background: var(--bar-bg); color: var(--bar-fg); }
 #bar h1 { margin: 0; font-size: 18px; }
-#bar .ver { margin-left: auto; opacity: .6; font-size: 12px; }
-#map { flex: 1; min-height: 0; }
+#bar .basemap { margin-left: auto; font-size: 12px; opacity: .85; }
+#bar .basemap select { margin-left: 4px; font: inherit; }
+#bar .ver { opacity: .6; font-size: 12px; }
+/* 배경을 "없음" 으로 두면 이 바탕만 남는다 */
+#map { flex: 1; min-height: 0; background: #e9eef0; }
 .ol-popup { position: absolute; min-width: 200px; max-width: min(320px, 80vw); padding: 10px 12px; border-radius: 6px;
   background: var(--pop-bg); color: var(--pop-fg); box-shadow: 0 2px 10px rgba(0,0,0,.3); transform: translate(-50%, calc(-100% - 12px)); }
 .ol-popup h2 { margin: 0 0 4px; font-size: 15px; font-style: italic; }

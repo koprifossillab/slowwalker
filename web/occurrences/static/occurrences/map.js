@@ -25,10 +25,48 @@
 
   const popup = new ol.Overlay({ element: popupEl, stopEvent: true });
 
+  // 배경지도 — GSM 과 같이 EOX 타일을 브라우저가 곧장 부른다.
+  // OpenStreetMap 은 쓰지 않는다. 연구소 망의 바깥 IP 가 OSM 정책 위반으로 막힌 적이 있다(GSM devlog 003).
+  // EOX 는 열쇠가 없고 CORS 를 열어 두었지만 비상업 이용만 된다(CC BY-NC-SA 4.0).
+  const EOX_S2 = 'Sentinel-2 cloudless by <a href="https://s2maps.eu" target="_blank" rel="noopener">EOX IT Services GmbH</a> (contains modified Copernicus Sentinel data 2023, CC BY-NC-SA 4.0)';
+  const EOX_TERRAIN = 'Terrain Light © <a href="https://maps.eox.at" target="_blank" rel="noopener">EOX IT Services GmbH</a>, data © OpenStreetMap contributors and others (CC BY-NC-SA 4.0)';
+
+  function eoxSource(name, maxZoom, attribution) {
+    return new ol.source.XYZ({
+      // WMTS 의 자리 차례가 z/y/x 다
+      url: `https://tiles.maps.eox.at/wmts/1.0.0/${name}/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg`,
+      crossOrigin: "anonymous",
+      maxZoom,
+      attributions: attribution,
+    });
+  }
+
+  const BASEMAPS = {
+    eox_terrain: () => eoxSource("terrain-light_3857", 13, EOX_TERRAIN),
+    eox_s2: () => eoxSource("s2cloudless-2023_3857", 16, EOX_S2),
+    none: () => null,
+  };
+
+  const basemapLayer = new ol.layer.Tile();
+  const basemapEl = document.getElementById("basemap");
+
+  // 고른 배경은 이 브라우저에만 기억한다. 저장소를 못 쓰면 기본값으로 돈다
+  function remembered() {
+    try { return localStorage.getItem("slowwalker.basemap"); } catch (e) { return null; }
+  }
+  function setBasemap(key) {
+    if (!(key in BASEMAPS)) key = "eox_terrain";
+    basemapLayer.setSource(BASEMAPS[key]());
+    basemapEl.value = key;
+    try { localStorage.setItem("slowwalker.basemap", key); } catch (e) { /* 기억 못 해도 된다 */ }
+  }
+  setBasemap(remembered());
+  basemapEl.addEventListener("change", () => setBasemap(basemapEl.value));
+
   const map = new ol.Map({
     target: mapEl,
     layers: [
-      new ol.layer.Tile({ source: new ol.source.OSM() }),
+      basemapLayer,
       new ol.layer.Vector({ source, style: pointStyle }),
     ],
     overlays: [popup],
