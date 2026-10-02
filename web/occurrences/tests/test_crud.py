@@ -17,6 +17,9 @@ def form_data(taxon, **over):
         "habitat": "이끼", "elevation_m": "", "event_date": "2026-05-01", "recorded_by": "",
         "reference": "", "remarks": "",
     }
+    # 고치기 화면은 사진 줄(formset)의 management form 도 보낸다. 브라우저는 늘 보낸다
+    data.update({"photos-TOTAL_FORMS": 0, "photos-INITIAL_FORMS": 0,
+                 "photos-MIN_NUM_FORMS": 0, "photos-MAX_NUM_FORMS": 1000})
     data.update(over)
     return data
 

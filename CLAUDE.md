@@ -19,8 +19,10 @@
 | 문·강·목·과·속·종 하나 | **분류군**(`Taxon`) | 종(종이 아닐 수도 있다) |
 | 산출이 나온 곳의 이름 | **산지**(`locality`) | 장소, 위치 |
 | 지도의 보이는 범위 | **범위**(bbox) | 영역, 뷰포트 |
+| 산출에 붙인 그림 하나 | **사진**(`Photo`) | 이미지, 첨부 |
 
 칸 이름은 Darwin Core(GBIF)를 따른다 — `decimal_latitude`·`basis_of_record`·`recorded_by` 따위.
+사진의 칸은 GBIF Simple Multimedia 확장(`description`·`creator`·`license`)을 따른다.
 새 칸을 더할 때도 Darwin Core 에 맞는 말이 있으면 그것을 쓴다.
 
 ## 자료의 층
@@ -28,6 +30,7 @@
 ```
 분류군   Taxon       parent 로 위아래를 잇는다
  └ 산출   Occurrence  위경도 하나 + 산지·서식지·채집일·출처
+    └ 사진 Photo     여러 장. 파일은 web/media/photos/<산출 번호>/, 섬네일은 그 아래 thumbs/
 ```
 
 ## 구조
@@ -35,8 +38,8 @@
 ```
 web/slowwalkerweb/   Django 설정 (settings·urls·version)
 web/occurrences/     앱 하나뿐이다
-  models.py          분류군·산출
-  forms.py           산출·분류군 양식 (검사는 모델의 것)
+  models.py          분류군·산출·사진 (섬네일을 만들고, 지우면 파일도 지운다)
+  forms.py           산출·분류군 양식, 사진 여러 장 받기 (검사는 모델의 것)
   views.py           지도 화면, 산출 GeoJSON, 산출 목록·자세히·넣기·고치기·지우기, 새 분류군, healthz
   templates/occurrences/
     base.html        모든 화면의 머리줄
@@ -46,6 +49,7 @@ web/occurrences/     앱 하나뿐이다
     pickmap.js       자세히·입력 화면의 작은 지도 (눌러서 위경도를 고른다)
     vendor/          OpenLayers 9.2.4 (GSM 과 같은 파일)
   tests/
+web/media/           올린 사진 (커밋하지 않는다, SLOWWALKER_MEDIA_DIR 로 옮긴다)
 devlog/              판단과 근거
 ```
 

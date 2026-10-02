@@ -87,3 +87,18 @@ form.edit legend { padding: 0 6px; font-weight: 600; color: var(--muted); }
 .errorlist { list-style: none; margin: 3px 0 0; padding: 0; color: var(--danger); font-size: 13px; }
 .field.has-error input, .field.has-error select { border-color: var(--danger); }
 .minimap.pick { cursor: crosshair; height: 280px; margin-bottom: 10px; }
+
+/* 사진 — 자세히 화면의 모음과 고치기 화면의 줄 */
+.gallery-card { margin-top: 16px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.gallery figure { margin: 0; }
+.gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; background: #eef1ef; }
+.gallery figcaption { margin-top: 4px; font-size: 12px; overflow-wrap: anywhere; }
+.photo-edit { display: grid; gap: 12px; margin-bottom: 12px; }
+.photo-row { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 12px; align-items: start;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+@media (max-width: 560px) { .photo-row { grid-template-columns: 1fr; } }
+.photo-row img { display: block; width: 100%; border-radius: 6px; }
+.photo-row .remove { display: inline-flex; gap: 6px; align-items: center; color: var(--danger); }
+.photo-row .remove input { width: auto; }
+.field input[type=file] { padding: 4px; }

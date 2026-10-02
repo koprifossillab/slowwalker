@@ -7,3 +7,4 @@
 Django==5.2.16
 whitenoise==6.8.2     # 정적 파일 서빙. DEBUG=0 이면 Django 가 안 내준다 (settings.py 의 주석)
 gunicorn==26.0.0      # 운영 서빙. 개발용 runserver 를 대신한다
+pillow==12.2.0        # 산출 사진(ImageField)을 읽고 섬네일을 만든다. GSM 과 같은 판

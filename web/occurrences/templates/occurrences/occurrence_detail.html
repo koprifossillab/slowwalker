@@ -31,6 +31,24 @@
   <div id="minimap" class="minimap" data-lat="{{ object.decimal_latitude|stringformat:'s' }}" data-lon="{{ object.decimal_longitude|stringformat:'s' }}"></div>
 </div>
 
+{% with photos=object.photos.all %}
+{% if photos %}
+<section class="card gallery-card">
+  <h3>사진 {{ photos|length }}장</h3>
+  <div class="gallery">
+    {% for ph in photos %}
+    <figure>
+      <a href="{{ ph.image.url }}" target="_blank" rel="noopener"><img src="{{ ph.thumbnail.url }}" alt="{{ ph.description|default:object.taxon.scientific_name }}" loading="lazy"></a>
+      {% if ph.description or ph.creator or ph.license %}
+      <figcaption>{{ ph.description }}{% if ph.creator or ph.license %}<span class="muted">{% if ph.description %} · {% endif %}{{ ph.creator }}{% if ph.creator and ph.license %}, {% endif %}{{ ph.license }}</span>{% endif %}</figcaption>
+      {% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endwith %}
+
 <div class="actions">
   <a class="button" href="{% url 'occurrences:update' object.pk %}">고치기</a>
   <a class="button secondary" href="{% url 'occurrences:create' %}?taxon={{ object.taxon_id }}">같은 분류군으로 새 산출</a>

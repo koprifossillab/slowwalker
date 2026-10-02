@@ -2,9 +2,10 @@
 
 완보동물(Tardigrada)의 산출(occurrence) 기록을 모아 세계지도 위에 점으로 보여 준다.
 
-- Django 5.2 · SQLite · OpenLayers 9 (저장소에 담아 둔다, CDN 을 안 탄다)
+- Django 5.2 · SQLite · OpenLayers 9 (저장소에 담아 둔다, CDN 을 안 탄다) · Pillow(사진 섬네일)
 - 배경지도는 EOX 타일(지형 음영·Sentinel-2 위성, 비상업 이용만) — OSM 은 연구소 IP 가 막힌 적이 있어 쓰지 않는다
 - 산출은 전용 화면(`/occurrences/`)에서 넣고·고치고·지운다. 분류군의 계층과 계정은 관리 화면(`/admin/`)에서
+- 산출마다 사진을 여러 장 붙인다. 파일은 `web/media/`(`SLOWWALKER_MEDIA_DIR`)에 쌓이고 커밋하지 않는다 — 따로 백업한다
 - 고치는 데 로그인을 묻지 않는 것이 기본이다(연구소 안 시험용). `SLOWWALKER_EDIT_REQUIRES_LOGIN=1` 이면 묻는다
 
 ## 돌리기

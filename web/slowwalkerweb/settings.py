@@ -113,6 +113,13 @@ STORAGES = {
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
 }
 
+# 올린 사진. 저장소 안(web/media/, .gitignore 에 있다)이 기본이다
+MEDIA_URL = f"/{URL_PREFIX}media/" if URL_PREFIX else "/media/"
+MEDIA_ROOT = Path(env("SLOWWALKER_MEDIA_DIR", str(BASE_DIR / "media")))
+
+# 사진 한 장의 크기 한계(MB). 현미경 원본 TIFF 도 대개 이 안에 든다
+MAX_PHOTO_MB = env_int("SLOWWALKER_MAX_PHOTO_MB", 20)
+
 # 산출을 넣기·고치기·지우기에 로그인을 묻는가. 연구소 안에서 시험하는 동안은 끈다(누구나 고친다).
 # 밖에 열거나 기록이 쌓이면 1 로 켠다. 계정은 `createsuperuser` 나 관리 화면에서 만든다
 EDIT_REQUIRES_LOGIN = env_bool("SLOWWALKER_EDIT_REQUIRES_LOGIN", False)
