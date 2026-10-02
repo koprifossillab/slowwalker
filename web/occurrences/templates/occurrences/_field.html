@@ -1,0 +1,7 @@
+{# 양식 칸 하나: 이름표, 입력기, 도움말, 오류 #}
+<div class="field{% if field.field.required %} required{% endif %}{% if field.errors %} has-error{% endif %}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {{ field }}
+  {% if field.help_text %}<p class="help">{{ field.help_text }}</p>{% endif %}
+  {{ field.errors }}
+</div>

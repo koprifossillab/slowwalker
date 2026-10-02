@@ -1,0 +1,19 @@
+{% extends "occurrences/base.html" %}
+{% block title %}산출 #{{ object.pk }} 지우기{% endblock %}
+{% block content %}
+<h2>산출 #{{ object.pk }} 를 지울까?</h2>
+<div class="card">
+  <dl class="fields">
+    <dt>분류군</dt><dd><i>{{ object.taxon.scientific_name }}</i></dd>
+    <dt>위도 · 경도</dt><dd>{{ object.decimal_latitude }}, {{ object.decimal_longitude }}</dd>
+    {% if object.locality %}<dt>산지</dt><dd>{{ object.locality }}</dd>{% endif %}
+    {% if object.event_date %}<dt>채집일</dt><dd>{{ object.event_date|date:"Y-m-d" }}</dd>{% endif %}
+  </dl>
+</div>
+<p class="muted">지운 산출은 되살릴 수 없다. 분류군은 그대로 남는다.</p>
+<form method="post" class="actions">
+  {% csrf_token %}
+  <button class="button danger" type="submit">지우기</button>
+  <a href="{% url 'occurrences:detail' object.pk %}">그만두기</a>
+</form>
+{% endblock %}

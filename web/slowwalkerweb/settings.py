@@ -83,6 +83,7 @@ TEMPLATES = [{
         "django.template.context_processors.request",
         "django.contrib.auth.context_processors.auth",
         "django.contrib.messages.context_processors.messages",
+        "occurrences.context_processors.site",
     ]},
 }]
 
@@ -111,6 +112,15 @@ STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
 }
+
+# 산출을 넣기·고치기·지우기에 로그인을 묻는가. 연구소 안에서 시험하는 동안은 끈다(누구나 고친다).
+# 밖에 열거나 기록이 쌓이면 1 로 켠다. 계정은 `createsuperuser` 나 관리 화면에서 만든다
+EDIT_REQUIRES_LOGIN = env_bool("SLOWWALKER_EDIT_REQUIRES_LOGIN", False)
+
+# 로그인 화면의 이름. 접두사(`URL_PREFIX`)는 urls.py 가 붙인다
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "occurrences:list"
+LOGOUT_REDIRECT_URL = "occurrences:map"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
