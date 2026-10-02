@@ -1,16 +1,13 @@
-{% load static %}<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>slowwalker — 완보동물 산출 지도</title>
+{% extends "occurrences/base.html" %}
+{% load static %}
+{% block title %}완보동물 산출 지도{% endblock %}
+{% block head %}
 <link rel="stylesheet" href="{% static 'occurrences/vendor/ol.css' %}">
 <link rel="stylesheet" href="{% static 'occurrences/map.css' %}?v={{ version }}">
-</head>
-<body>
-<header id="bar">
-  <h1>slowwalker</h1>
-  <span id="count" aria-live="polite"></span>
+{% endblock %}
+{% block body_class %}fullmap{% endblock %}
+{% block bar %}<span id="count" aria-live="polite"></span>{% endblock %}
+{% block bar_right %}
   <label class="basemap">배경
     <select id="basemap">
       <option value="eox_terrain">지형 음영 (EOX)</option>
@@ -18,11 +15,13 @@
       <option value="none">없음</option>
     </select>
   </label>
-  <span class="ver">v{{ version }}</span>
-</header>
-<div id="map" data-geojson="{% url 'occurrences:geojson' %}"></div>
+{% endblock %}
+{% block main %}
+<div id="map" data-geojson="{% url 'occurrences:geojson' %}" data-detail="{% url 'occurrences:detail' 0 %}"></div>
 <div id="popup" class="ol-popup" hidden></div>
+{% endblock %}
+{% block scripts %}
 <script src="{% static 'occurrences/vendor/ol.js' %}"></script>
+<script src="{% static 'occurrences/basemaps.js' %}?v={{ version }}"></script>
 <script src="{% static 'occurrences/map.js' %}?v={{ version }}"></script>
-</body>
-</html>
+{% endblock %}

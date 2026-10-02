@@ -1,5 +1,12 @@
 # 바뀐 것
 
+## 0.2.0 — 2026-10-02
+
+- 산출을 넣고·보고·고치고·지우는 화면 — 목록(찾기·분류군 거르기), 자세히, 입력·고치기(작은 지도를 눌러 위경도), 지우기 (koprifossillab 003)
+- 산출을 넣다가 분류군을 곧바로 더하는 화면 (koprifossillab 003)
+- 고치는 데 로그인을 묻는가를 `SLOWWALKER_EDIT_REQUIRES_LOGIN` 으로 정한다. 기본은 묻지 않는다(연구소 안 시험) (koprifossillab 003)
+- 모든 화면이 같은 머리줄을 쓰고, 지도 팝업에서 자세히로 간다 (koprifossillab 003)
+
 ## 0.1.1 — 2026-10-02
 
 - 배경지도를 OpenStreetMap 에서 EOX(지형 음영·Sentinel-2 위성)로 바꾸고 고르개를 둔다 (koprifossillab 002)

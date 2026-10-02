@@ -1,0 +1,60 @@
+{% extends "occurrences/base.html" %}
+{% load static %}
+{% block title %}{% if object %}산출 #{{ object.pk }} 고치기{% else %}새 산출{% endif %}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'occurrences/vendor/ol.css' %}">{% endblock %}
+{% block content %}
+<h2>{% if object %}산출 #{{ object.pk }} 고치기{% else %}새 산출{% endif %}</h2>
+
+<form class="edit" method="post" novalidate>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+
+  <fieldset>
+    <legend>무엇</legend>
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.taxon %}
+      {% include "occurrences/_field.html" with field=form.basis_of_record %}
+    </div>
+    {% if not object %}<p class="help muted">목록에 없는 분류군은 <a href="{% url 'occurrences:taxon_create' %}?next={{ request.get_full_path|urlencode }}">먼저 더한다</a>. 이 화면에 적던 것은 사라진다.</p>{% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend>어디</legend>
+    <div id="minimap" class="minimap pick" data-lat-input="{{ form.decimal_latitude.id_for_label }}" data-lon-input="{{ form.decimal_longitude.id_for_label }}"></div>
+    <p class="help muted">지도를 누르면 그 자리의 위경도가 아래 칸에 들어간다. 숫자를 바로 적어도 된다.</p>
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.decimal_latitude %}
+      {% include "occurrences/_field.html" with field=form.decimal_longitude %}
+      {% include "occurrences/_field.html" with field=form.coordinate_uncertainty_m %}
+      {% include "occurrences/_field.html" with field=form.elevation_m %}
+      {% include "occurrences/_field.html" with field=form.country %}
+      {% include "occurrences/_field.html" with field=form.locality %}
+    </div>
+    {% include "occurrences/_field.html" with field=form.habitat %}
+  </fieldset>
+
+  <fieldset>
+    <legend>언제 · 누가</legend>
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.event_date %}
+      {% include "occurrences/_field.html" with field=form.recorded_by %}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>출처</legend>
+    {% include "occurrences/_field.html" with field=form.reference %}
+    {% include "occurrences/_field.html" with field=form.remarks %}
+  </fieldset>
+
+  <div class="actions">
+    <button class="button" type="submit">{% if object %}고친 것 저장{% else %}넣기{% endif %}</button>
+    <a href="{% if object %}{% url 'occurrences:detail' object.pk %}{% else %}{% url 'occurrences:list' %}{% endif %}">그만두기</a>
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'occurrences/vendor/ol.js' %}"></script>
+<script src="{% static 'occurrences/basemaps.js' %}?v={{ version }}"></script>
+<script src="{% static 'occurrences/pickmap.js' %}?v={{ version }}"></script>
+{% endblock %}

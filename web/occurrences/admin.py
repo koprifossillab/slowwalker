@@ -1,4 +1,4 @@
-"""산출 기록은 지금은 Django 관리 화면에서 넣고 고친다. 전용 입력 화면은 필요해지면 만든다."""
+"""관리 화면. 산출은 전용 화면(`/occurrences/`)에서 넣고 고친다 — 여기는 분류군을 넣고 계정을 다루는 곳이다."""
 from django.contrib import admin
 
 from .models import Occurrence, Taxon

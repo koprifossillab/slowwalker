@@ -1,0 +1,41 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}완보동물 산출{% endblock %} — slowwalker</title>
+<link rel="stylesheet" href="{% static 'occurrences/site.css' %}?v={{ version }}">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}page{% endblock %}">
+<header id="bar">
+  <h1><a href="{% url 'occurrences:map' %}">slowwalker</a></h1>
+  <nav>
+    <a href="{% url 'occurrences:map' %}"{% if request.resolver_match.url_name == 'map' %} aria-current="page"{% endif %}>지도</a>
+    <a href="{% url 'occurrences:list' %}"{% if request.resolver_match.url_name == 'list' %} aria-current="page"{% endif %}>산출 목록</a>
+    <a href="{% url 'occurrences:create' %}"{% if request.resolver_match.url_name == 'create' %} aria-current="page"{% endif %}>새 산출</a>
+  </nav>
+  {% block bar %}{% endblock %}
+  <div class="right">
+    {% block bar_right %}{% endblock %}
+    {% if user.is_authenticated %}
+      <span class="who">{{ user.get_username }}</span>
+      {# Django 5 의 로그아웃은 POST 만 받는다 #}
+      <form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}<button type="submit" class="link">로그아웃</button></form>
+    {% elif edit_requires_login %}
+      <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">로그인</a>
+    {% endif %}
+    <span class="ver">v{{ version }}</span>
+  </div>
+</header>
+{% block main %}
+<main class="sheet">
+  {% if messages %}
+  <ul class="messages">{% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+{% endblock %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

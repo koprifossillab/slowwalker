@@ -36,9 +36,14 @@
 web/slowwalkerweb/   Django 설정 (settings·urls·version)
 web/occurrences/     앱 하나뿐이다
   models.py          분류군·산출
-  views.py           지도 화면, 산출 GeoJSON, healthz
+  forms.py           산출·분류군 양식 (검사는 모델의 것)
+  views.py           지도 화면, 산출 GeoJSON, 산출 목록·자세히·넣기·고치기·지우기, 새 분류군, healthz
+  templates/occurrences/
+    base.html        모든 화면의 머리줄
   static/occurrences/
+    basemaps.js      배경지도(EOX) — 세계지도와 작은 지도가 함께 쓴다
     map.js           OpenLayers 로 점을 그린다
+    pickmap.js       자세히·입력 화면의 작은 지도 (눌러서 위경도를 고른다)
     vendor/          OpenLayers 9.2.4 (GSM 과 같은 파일)
   tests/
 devlog/              판단과 근거

@@ -1,0 +1,23 @@
+{% extends "occurrences/base.html" %}
+{% block title %}새 분류군{% endblock %}
+{% block content %}
+<h2>새 분류군</h2>
+<form class="edit" method="post" novalidate style="max-width:640px">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <fieldset>
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.scientific_name %}
+      {% include "occurrences/_field.html" with field=form.authorship %}
+      {% include "occurrences/_field.html" with field=form.rank %}
+      {% include "occurrences/_field.html" with field=form.parent %}
+    </div>
+  </fieldset>
+  <input type="hidden" name="next" value="{{ next }}">
+  <div class="actions">
+    <button class="button" type="submit">더하기</button>
+    <a href="{{ next }}">그만두기</a>
+  </div>
+</form>
+<p class="muted">분류군을 고치거나 지우는 일, 위아래를 잇는 일은 <a href="{% url 'admin:occurrences_taxon_changelist' %}">관리 화면</a>이 한다.</p>
+{% endblock %}

@@ -1,16 +1,5 @@
-:root {
-  --bar-bg: #1f3a2e;
-  --bar-fg: #e8f1ea;
-  --pop-bg: #ffffff;
-  --pop-fg: #1b1b1b;
-}
-html, body { margin: 0; height: 100%; font: 14px/1.4 "Pretendard", "Noto Sans KR", system-ui, sans-serif; }
-body { display: flex; flex-direction: column; }
-#bar { display: flex; align-items: baseline; gap: 12px; padding: 8px 16px; background: var(--bar-bg); color: var(--bar-fg); }
-#bar h1 { margin: 0; font-size: 18px; }
-#bar .basemap { margin-left: auto; font-size: 12px; opacity: .85; }
-#bar .basemap select { margin-left: 4px; font: inherit; }
-#bar .ver { opacity: .6; font-size: 12px; }
+/* 세계지도 화면. 머리줄·글꼴은 site.css 에 있다 */
+body.fullmap { height: 100vh; display: flex; flex-direction: column; }
 /* 배경을 "없음" 으로 두면 이 바탕만 남는다 */
 #map { flex: 1; min-height: 0; background: #e9eef0; }
 .ol-popup { position: absolute; min-width: 200px; max-width: min(320px, 80vw); padding: 10px 12px; border-radius: 6px;
@@ -19,3 +8,4 @@ body { display: flex; flex-direction: column; }
 .ol-popup dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; }
 .ol-popup dt { opacity: .6; }
 .ol-popup dd { margin: 0; overflow-wrap: anywhere; }
+.ol-popup .more { margin: 8px 0 0; text-align: right; }

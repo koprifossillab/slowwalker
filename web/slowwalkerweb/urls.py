@@ -5,6 +5,7 @@
 """
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
 prefix = settings.URL_PREFIX
@@ -12,4 +13,6 @@ prefix = settings.URL_PREFIX
 urlpatterns = [
     path(prefix, include("occurrences.urls")),
     path(f"{prefix}admin/", admin.site.urls),
+    path(f"{prefix}login/", auth_views.LoginView.as_view(template_name="occurrences/login.html"), name="login"),
+    path(f"{prefix}logout/", auth_views.LogoutView.as_view(), name="logout"),
 ]
