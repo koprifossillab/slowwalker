@@ -62,7 +62,7 @@ devlog/              판단과 근거
 ## 커밋과 PR
 
 GSM 과 같다 — 기능마다 `feature/<영어-kebab>` 브랜치, 메시지는 한국어로 무엇을 했는지 쓰고 끝에
-devlog 를 붙인다(`(koprifossillab 001)`). `git add` 는 고친 파일만 지정한다.
+devlog 를 붙인다(`(summer02kini 001)`). `git add` 는 고친 파일만 지정한다.
 
 ## devlog
 

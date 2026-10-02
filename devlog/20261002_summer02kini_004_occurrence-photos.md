@@ -1,6 +1,6 @@
 # 산출에 사진을 붙인다
 
-2026-10-02 · `feature/occurrence-photos` · koprifossillab
+2026-10-02 · `feature/occurrence-photos` · summer02kini
 
 ## 왜
 
