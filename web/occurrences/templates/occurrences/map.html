@@ -11,6 +11,13 @@
 <header id="bar">
   <h1>slowwalker</h1>
   <span id="count" aria-live="polite"></span>
+  <label class="basemap">배경
+    <select id="basemap">
+      <option value="eox_terrain">지형 음영 (EOX)</option>
+      <option value="eox_s2">Sentinel-2 위성 (EOX)</option>
+      <option value="none">없음</option>
+    </select>
+  </label>
   <span class="ver">v{{ version }}</span>
 </header>
 <div id="map" data-geojson="{% url 'occurrences:geojson' %}"></div>
