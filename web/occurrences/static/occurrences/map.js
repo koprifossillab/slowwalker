@@ -240,6 +240,7 @@
   async function loadRecords() {
     statusEl.hidden = false;
     statusEl.textContent = "기록을 불러오고 있습니다…";
+    let startupOk = false;
     try {
       const response = await fetch(mapEl.dataset.geojson, { headers: { Accept: "application/json" }, credentials: "same-origin" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -261,6 +262,7 @@
         if (record) selectRecord(record, true);
       }
       if (allRecords.length < data.features.length) notice("좌표가 올바르지 않은 일부 기록을 지도에서 제외했습니다. 산출 목록에서 확인하세요.", 10000);
+      startupOk = true;
     } catch (_) {
       allRecords = [];
       visibleRecords = [];
@@ -268,6 +270,9 @@
       listEl.replaceChildren();
       for (const id of ["site-count", "occurrence-count", "taxon-count"]) $(id).textContent = "—";
       statusEl.innerHTML = '<strong>기록을 불러오지 못했습니다</strong><p>서버 연결을 확인하고 다시 시도하세요.</p><button type="button" data-retry-records>다시 불러오기</button>';
+    } finally {
+      // 원격 배경 타일 전체를 기다리지 않는다. 오류일 때도 재시도 화면에 들어갈 수 있게 한다.
+      document.dispatchEvent(new CustomEvent("slowwalker:startup-settled", { detail: { ok: startupOk } }));
     }
   }
 

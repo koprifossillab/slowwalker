@@ -1,0 +1,25 @@
+{# 기본은 숨김이다. 시작 스크립트가 없거나 실패해도 지도에 들어갈 수 있다. #}
+<section id="welcome-screen" class="sw-welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-status" tabindex="-1" hidden>
+  <div class="sw-welcome-top">
+    <span>SLOWWALKER <span class="sw-welcome-top-divider">/</span> FIELD ATLAS</span>
+    <span>{% if preview_notice %}{{ preview_notice }}{% else %}완보동물 생물지리 지도{% endif %}</span>
+  </div>
+  <div class="sw-welcome-center">
+    <div class="sw-welcome-illustration">
+      <span class="sw-welcome-halo" aria-hidden="true"></span>
+      {% include "occurrences/_loading_mascot.html" %}
+    </div>
+    <p class="sw-welcome-greeting">안녕, 반가워요!</p>
+    <h1 id="welcome-title">slowwalker<span>.</span></h1>
+    <p class="sw-welcome-tagline">작은 걸음으로, 넓은 세상으로.</p>
+    <div class="sw-welcome-status-line">
+      <span class="sw-welcome-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <p id="welcome-status" role="status" aria-live="polite">채집 지도를 준비하고 있어요.</p>
+    </div>
+    <div class="sw-welcome-actions">
+      <button id="welcome-skip" type="button">지도로 바로가기 <span aria-hidden="true">→</span></button>
+      <button id="welcome-linger" type="button" aria-pressed="false">인사 더 보기</button>
+    </div>
+  </div>
+  <div class="sw-welcome-bottom"><span>KOPRI FOSSIL LAB</span><span>완보동물 생물지리 지도</span></div>
+</section>

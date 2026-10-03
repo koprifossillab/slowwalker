@@ -4,10 +4,13 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'occurrences/vendor/ol.css' %}">
 <link rel="stylesheet" href="{% static 'occurrences/map.css' %}?v={{ version }}">
+<link rel="stylesheet" href="{% static 'occurrences/welcome.css' %}?v={{ version }}">
+<link rel="stylesheet" href="{% static 'occurrences/loading-mascot.css' %}?v={{ version }}">
 {% endblock %}
 {% block body_class %}fullmap{% endblock %}
 {% block header %}{% endblock %}
 {% block main %}
+{% include "occurrences/_welcome.html" %}
 <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
@@ -55,7 +58,7 @@
       <div class="secondary-links"><a href="{% url 'occurrences:site_create' %}">좌표 직접 입력</a><span>·</span><a href="{% url 'occurrences:list' %}">전체 산출 목록 <span aria-hidden="true">↗</span></a></div>
       <div class="basemap-control"><label for="basemap"><svg aria-hidden="true"><use href="#i-layers"/></svg>배경지도</label><select id="basemap"><option value="eox_terrain">지형 음영 · EOX</option><option value="eox_s2">위성 영상 · Sentinel-2</option><option value="none">배경 없음</option></select></div>
       <p class="terrain-note">지형의 높낮이를 음영으로 표현한 2D 지도</p>
-      <div class="sidebar-footer"><span>v{{ version }}</span><span>{% if user.is_authenticated %}{{ user.get_username }}{% elif edit_requires_login %}<a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">로그인</a>{% else %}연구실 공동 지도{% endif %}</span>{% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}<button type="submit" class="link">로그아웃</button></form>{% endif %}</div>
+      <div class="sidebar-footer"><span>v{{ version }}</span><button type="button" id="welcome-replay" class="welcome-replay" hidden>인사 다시 보기</button><span>{% if user.is_authenticated %}{{ user.get_username }}{% elif edit_requires_login %}<a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">로그인</a>{% else %}연구실 공동 지도{% endif %}</span>{% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}<button type="submit" class="link">로그아웃</button></form>{% endif %}</div>
     </div>
   </aside>
   <main class="map-workspace" aria-label="완보동물 채집 지도">
@@ -76,6 +79,7 @@
 <noscript><div class="noscript-note">지도를 사용하려면 브라우저에서 JavaScript를 켜 주세요. <a href="{% url 'occurrences:list' %}">산출 목록 보기</a></div></noscript>
 {% endblock %}
 {% block scripts %}
+<script src="{% static 'occurrences/welcome.js' %}?v={{ version }}"></script>
 <script src="{% static 'occurrences/vendor/ol.js' %}"></script>
 <script src="{% static 'occurrences/basemaps.js' %}?v={{ version }}"></script>
 <script src="{% static 'occurrences/map.js' %}?v={{ version }}"></script>

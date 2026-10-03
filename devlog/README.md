@@ -6,6 +6,7 @@
 
 | devlog | 날짜 | 제목 |
 |---|---|---|
+| summer02kini 006 | 2026-10-03 | [완보동물이 먼저 인사한다](20261003_summer02kini_006_waving_welcome.md) |
 | summer02kini 005 | 2026-10-03 | [지도에서 채집과 시료를 따라간다](20261003_summer02kini_005_sampling_map.md) |
 | summer02kini 001 | 2026-10-02 | [뼈대를 GSM 꼴로 세운다](20261002_summer02kini_001_skeleton.md) |
 | summer02kini 002 | 2026-10-02 | [배경지도를 OSM 에서 EOX 로](20261002_summer02kini_002_eox-basemap.md) |

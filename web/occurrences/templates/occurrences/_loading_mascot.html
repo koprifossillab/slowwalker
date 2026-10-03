@@ -1,0 +1,77 @@
+{# 느리지만 반갑게 인사하는 완보동물. 네 쌍의 다리를 직접 그린 장식용 SVG다. #}
+<div class="sw-mascot" aria-hidden="true">
+  <svg class="sw-mascot__drawing" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="sw-mascot-body" x1="108" y1="90" x2="235" y2="266" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#d9e9cd"/>
+        <stop offset=".48" stop-color="#b7d4b4"/>
+        <stop offset="1" stop-color="#92b79b"/>
+      </linearGradient>
+      <linearGradient id="sw-mascot-face" x1="132" y1="83" x2="195" y2="171" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#e4efdb"/>
+        <stop offset="1" stop-color="#c0dab9"/>
+      </linearGradient>
+      <linearGradient id="sw-mascot-leg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#c5ddbc"/>
+        <stop offset="1" stop-color="#a3c2a4"/>
+      </linearGradient>
+    </defs>
+
+    <circle cx="160" cy="169" r="119" fill="#e9e4d7" opacity=".5"/>
+    <circle cx="65" cy="90" r="4" fill="#cbb589" opacity=".65"/>
+    <circle cx="273" cy="201" r="3" fill="#cbb589" opacity=".55"/>
+    <path d="M66 226v10m-5-5h10" stroke="#bdaa80" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+    <ellipse class="sw-mascot__shadow" cx="161" cy="286" rx="73" ry="10" fill="#8b8468" opacity=".15"/>
+
+    <g class="sw-mascot__body">
+      {# 뒤쪽의 세 쌍: 두 번째, 세 번째, 네 번째 다리. #}
+      <g class="sw-mascot__outline">
+        <path d="M112 164c-13-7-28-7-37 2-7 7-3 19 7 23 12 4 25-3 35-13Z" fill="url(#sw-mascot-leg)"/>
+        <path d="m77 179-5 6m10-3-3 7m11-6-1 6" class="sw-mascot__claws"/>
+        <path d="M208 164c13-7 28-7 37 2 7 7 3 19-7 23-12 4-25-3-35-13Z" fill="url(#sw-mascot-leg)"/>
+        <path d="m243 179 5 6m-10-3 3 7m-11-6 1 6" class="sw-mascot__claws"/>
+
+        <path d="M112 201c-15-4-27-1-32 9-4 9 1 18 11 19 12 2 21-6 27-15Z" fill="url(#sw-mascot-leg)"/>
+        <path d="m84 219-3 7m10-4-1 7m9-6 1 6" class="sw-mascot__claws"/>
+        <path d="M208 201c15-4 27-1 32 9 4 9-1 18-11 19-12 2-21-6-27-15Z" fill="url(#sw-mascot-leg)"/>
+        <path d="m236 219 3 7m-10-4 1 7m-9-6-1 6" class="sw-mascot__claws"/>
+
+        <path d="M125 238c-11 0-23 8-23 18 0 11 9 15 18 12 10-3 15-11 18-20Z" fill="url(#sw-mascot-leg)"/>
+        <path d="m107 258-3 7m10-3-1 7m9-10 2 6" class="sw-mascot__claws"/>
+        <path d="M195 238c11 0 23 8 23 18 0 11-9 15-18 12-10-3-15-11-18-20Z" fill="url(#sw-mascot-leg)"/>
+        <path d="m213 258 3 7m-10-3 1 7m-9-10-2 6" class="sw-mascot__claws"/>
+      </g>
+
+      {# 말랑한 몸과 둥글게 접히는 마디. #}
+      <path class="sw-mascot__outline" d="M107 134c-10 16-12 34-7 49-7 16-5 34 5 45 0 23 19 43 55 44 36-1 55-21 55-44 10-11 12-29 5-45 5-15 3-33-7-49Z" fill="url(#sw-mascot-body)"/>
+      <path d="M111 179c26 13 72 13 98 0m-95 39c25 12 67 12 92 0m-80 33c20 7 48 7 68 0" fill="none" stroke="#709b7c" stroke-width="2.5" stroke-linecap="round" opacity=".38"/>
+      <path d="M112 159c-4 9-5 16-3 23m0 14c-2 8 0 15 4 20m7 16c1 8 5 14 12 18" fill="none" stroke="#e4eed8" stroke-width="5" stroke-linecap="round" opacity=".64"/>
+      <ellipse cx="165" cy="204" rx="27" ry="34" fill="#e8efce" opacity=".2"/>
+
+      {# 첫 번째 다리 한 쌍. 화면 오른쪽 앞다리가 어깨에서 흔들린다. #}
+      <g class="sw-mascot__outline">
+        <path d="M108 131c-12-1-24 4-29 14-4 8 0 17 9 19 10 2 17-7 24-17" fill="url(#sw-mascot-leg)"/>
+        <path d="m81 151-5 5m10-2-3 7m10-6-1 7" class="sw-mascot__claws"/>
+      </g>
+      <g class="sw-mascot__wave sw-mascot__outline">
+        <path d="M213 137c14 2 23-9 28-23 3-10 3-19 12-23 9-4 18 3 17 13-1 12-8 25-15 35-9 14-23 22-38 15Z" fill="url(#sw-mascot-leg)"/>
+        <path d="M251 96c-3-3-3-7-1-10m8 8c0-5 2-8 5-9m2 12c3-4 6-5 9-4" class="sw-mascot__claws"/>
+        <path d="M229 143c11-5 17-15 20-24" stroke="#e9f0d9" stroke-width="4" stroke-linecap="round" fill="none" opacity=".7"/>
+      </g>
+
+      {# 얼굴은 몸 위에 겹쳐서 작은 목이나 사람 같은 귀가 생기지 않게 한다. #}
+      <path class="sw-mascot__outline" d="M160 74c37 0 63 22 66 49 3 29-23 51-66 51s-69-22-66-51c3-27 29-49 66-49Z" fill="url(#sw-mascot-face)"/>
+      <path d="M116 104c8-10 18-15 30-17" stroke="#f4f5e4" stroke-width="6" stroke-linecap="round" fill="none" opacity=".8"/>
+      <ellipse cx="118" cy="141" rx="11" ry="7" fill="#d8a697" opacity=".7"/>
+      <ellipse cx="202" cy="141" rx="11" ry="7" fill="#d8a697" opacity=".7"/>
+      <g class="sw-mascot__eyes" fill="#42574a">
+        <ellipse cx="134" cy="123" rx="5.3" ry="7.4"/>
+        <ellipse cx="186" cy="123" rx="5.3" ry="7.4"/>
+        <circle cx="135.5" cy="120.3" r="1.7" fill="#f6f6e9"/>
+        <circle cx="187.5" cy="120.3" r="1.7" fill="#f6f6e9"/>
+      </g>
+      <path d="M148 141q12 15 24 0" stroke="#526651" stroke-width="3.3" stroke-linecap="round" fill="none"/>
+      <ellipse cx="160" cy="133" rx="3" ry="2" fill="#8eab88" opacity=".7"/>
+    </g>
+  </svg>
+</div>

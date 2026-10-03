@@ -1,0 +1,93 @@
+/* 인사하는 완보동물만 꾸민다. 로딩 화면의 배치·안내 문구는 바깥에서 맡는다. */
+.sw-mascot {
+  width: min(280px, 74vw);
+  margin-inline: auto;
+  line-height: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 지도 도구용 svg 규칙이 캐릭터의 크기와 색을 덮지 않도록 범위를 명시한다. */
+.sw-mascot svg.sw-mascot__drawing,
+.fullmap .sw-mascot svg.sw-mascot__drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  overflow: visible;
+  fill: none;
+  stroke: none;
+  stroke-width: 0;
+  flex: none;
+}
+
+.sw-mascot__outline {
+  stroke: #65846b;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sw-mascot__claws {
+  fill: none;
+  stroke: #71856a;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+}
+
+.sw-mascot__body {
+  transform-box: view-box;
+  transform-origin: 160px 263px;
+  animation: sw-mascot-bob 2.8s ease-in-out infinite;
+}
+
+.sw-mascot__wave {
+  transform-box: view-box;
+  transform-origin: 218px 147px;
+  animation: sw-mascot-wave 1.9s ease-in-out infinite;
+}
+
+.sw-mascot__eyes {
+  transform-box: view-box;
+  transform-origin: 160px 123px;
+  animation: sw-mascot-blink 4.8s ease-in-out infinite;
+}
+
+.sw-mascot__shadow {
+  transform-box: view-box;
+  transform-origin: 161px 286px;
+  animation: sw-mascot-shadow 2.8s ease-in-out infinite;
+}
+
+@keyframes sw-mascot-wave {
+  0%, 100% { transform: rotate(-8deg); }
+  25% { transform: rotate(13deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(12deg); }
+}
+
+@keyframes sw-mascot-bob {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+
+@keyframes sw-mascot-blink {
+  0%, 42%, 46%, 100% { transform: scaleY(1); }
+  44% { transform: scaleY(.09); }
+}
+
+@keyframes sw-mascot-shadow {
+  0%, 100% { transform: scaleX(1); opacity: .15; }
+  50% { transform: scaleX(.9); opacity: .1; }
+}
+
+/* 움직임을 줄인 환경에서는 앞다리를 올린 채 웃는 정지 그림을 보여 준다. */
+@media (prefers-reduced-motion: reduce) {
+  .sw-mascot__body,
+  .sw-mascot__wave,
+  .sw-mascot__eyes,
+  .sw-mascot__shadow {
+    animation: none;
+    transform: none;
+  }
+}
