@@ -6,7 +6,7 @@
 from django import forms
 from django.conf import settings
 
-from .models import Occurrence, Photo, Taxon
+from .models import CollectionEvent, Occurrence, Photo, Sample, Site, Taxon
 
 
 class MultipleImageInput(forms.ClearableFileInput):
@@ -35,7 +35,7 @@ class OccurrenceForm(forms.ModelForm):
     class Meta:
         model = Occurrence
         fields = [
-            "taxon", "basis_of_record",
+            "taxon", "basis_of_record", "sample", "individual_count", "identified_by", "identification_qualifier",
             "decimal_latitude", "decimal_longitude", "coordinate_uncertainty_m",
             "country", "locality", "habitat", "elevation_m",
             "event_date", "recorded_by",
@@ -61,6 +61,59 @@ class OccurrenceForm(forms.ModelForm):
         # 학명 차례로 — 계급까지 보여야 같은 이름의 속·종이 갈린다
         self.fields["taxon"].queryset = Taxon.objects.order_by("scientific_name", "rank")
         self.fields["taxon"].label_from_instance = lambda t: f"{t} · {t.get_rank_display()}"
+        self.fields["sample"].queryset = Sample.objects.select_related("event__site")
+        self.fields["coordinate_uncertainty_m"].widget.attrs["min"] = 1
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get("sample"):
+            # 연결 산출의 좌표는 복사하지 않는다. 기존 단독 기록의 원본 칸은 보존한다.
+            for name in ("decimal_latitude", "decimal_longitude", "coordinate_uncertainty_m",
+                         "country", "locality", "habitat", "elevation_m", "event_date", "recorded_by"):
+                cleaned[name] = getattr(self.instance, name)
+        elif cleaned.get("coordinate_uncertainty_m") == 0:
+            self.add_error("coordinate_uncertainty_m", "좌표 불확도는 1 m 이상으로 적고, 알 수 없으면 비워 둔다.")
+        return cleaned
+
+
+class SiteForm(forms.ModelForm):
+    new_photos = MultipleImageField(label="채집지 사진 더하기", required=False)
+
+    class Meta:
+        model = Site
+        fields = ["name", "realm", "decimal_latitude", "decimal_longitude", "coordinate_uncertainty_m",
+                  "country", "locality", "habitat", "remarks"]
+        widgets = {
+            "decimal_latitude": forms.NumberInput(attrs={"step": "any", "min": -90, "max": 90}),
+            "decimal_longitude": forms.NumberInput(attrs={"step": "any", "min": -180, "max": 180}),
+            "remarks": forms.Textarea(attrs={"rows": 3}),
+        }
+
+
+class CollectionEventForm(forms.ModelForm):
+    class Meta:
+        model = CollectionEvent
+        fields = ["site", "event_date", "event_date_verbatim", "recorded_by", "sampling_protocol",
+                  "sampling_effort", "reference", "remarks"]
+        widgets = {
+            "event_date": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "sampling_protocol": forms.Textarea(attrs={"rows": 3}),
+            "reference": forms.Textarea(attrs={"rows": 3}),
+            "remarks": forms.Textarea(attrs={"rows": 3}),
+        }
+
+
+class SampleForm(forms.ModelForm):
+    new_photos = MultipleImageField(label="시료 사진 더하기", required=False)
+
+    class Meta:
+        model = Sample
+        fields = ["event", "sample_code", "substrate", "host_taxon", "description"]
+        widgets = {"description": forms.Textarea(attrs={"rows": 4})}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["event"].queryset = CollectionEvent.objects.select_related("site")
 
 
 class TaxonForm(forms.ModelForm):
@@ -80,3 +133,7 @@ class TaxonForm(forms.ModelForm):
 # 이미 붙은 사진의 설명·찍은 이·이용 허락을 고치고, 빼고 싶은 것을 고른다. 새 사진은 `new_photos` 로 받는다
 PhotoFormSet = forms.inlineformset_factory(
     Occurrence, Photo, fields=["description", "creator", "license"], extra=0, can_delete=True)
+SitePhotoFormSet = forms.inlineformset_factory(
+    Site, Photo, fields=["description", "creator", "license"], extra=0, can_delete=True)
+SamplePhotoFormSet = forms.inlineformset_factory(
+    Sample, Photo, fields=["description", "creator", "license"], extra=0, can_delete=True)

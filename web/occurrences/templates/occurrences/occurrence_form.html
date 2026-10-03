@@ -10,15 +10,26 @@
   {{ form.non_field_errors }}
 
   <fieldset>
+    <legend>어느 시료에서 나왔는가</legend>
+    {% include "occurrences/_field.html" with field=form.sample %}
+    <p class="help muted" id="sample-source-note">시료를 선택하면 채집지의 좌표와 채집 정보를 함께 사용한다. 기존 단독 기록의 원래 정보는 보존된다.</p>
+    {% if object.sample_id %}<p><a href="{% url 'occurrences:sample_detail' object.sample_id %}">{{ object.sample.sample_code }} · 연결 시료 보기</a></p>{% endif %}
+    <p class="help muted">새 채집 자료는 <a href="{% url 'occurrences:site_create' %}">채집지 등록</a>부터 시작한다. 시료 없이 문헌 기록 등을 넣으려면 아래에 좌표를 적는다.</p>
+  </fieldset>
+
+  <fieldset>
     <legend>무엇</legend>
     <div class="grid2">
       {% include "occurrences/_field.html" with field=form.taxon %}
       {% include "occurrences/_field.html" with field=form.basis_of_record %}
+      {% include "occurrences/_field.html" with field=form.individual_count %}
+      {% include "occurrences/_field.html" with field=form.identified_by %}
+      {% include "occurrences/_field.html" with field=form.identification_qualifier %}
     </div>
     {% if not object %}<p class="help muted">목록에 없는 분류군은 <a href="{% url 'occurrences:taxon_create' %}?next={{ request.get_full_path|urlencode }}">먼저 더한다</a>. 이 화면에 적던 것은 사라진다.</p>{% endif %}
   </fieldset>
 
-  <fieldset>
+  <fieldset data-standalone-fields>
     <legend>어디</legend>
     <div id="minimap" class="minimap pick" data-lat-input="{{ form.decimal_latitude.id_for_label }}" data-lon-input="{{ form.decimal_longitude.id_for_label }}"></div>
     <p class="help muted">지도를 누르면 그 자리의 위경도가 아래 칸에 들어간다. 숫자를 바로 적어도 된다.</p>
@@ -33,7 +44,7 @@
     {% include "occurrences/_field.html" with field=form.habitat %}
   </fieldset>
 
-  <fieldset>
+  <fieldset data-standalone-fields>
     <legend>언제 · 누가</legend>
     <div class="grid2">
       {% include "occurrences/_field.html" with field=form.event_date %}
@@ -43,30 +54,7 @@
 
   <fieldset>
     <legend>사진</legend>
-    {% if photo_formset %}
-      {{ photo_formset.management_form }}
-      {{ photo_formset.non_form_errors }}
-      {% if photo_formset.forms %}
-      <div class="photo-edit">
-        {% for pf in photo_formset %}
-        <div class="photo-row">
-          {{ pf.id }}
-          <a href="{{ pf.instance.image.url }}" target="_blank" rel="noopener"><img src="{{ pf.instance.thumbnail.url }}" alt="{{ pf.instance.description|default:'사진' }}" loading="lazy"></a>
-          <div class="photo-fields">
-            {% include "occurrences/_field.html" with field=pf.description %}
-            <div class="grid2">
-              {% include "occurrences/_field.html" with field=pf.creator %}
-              {% include "occurrences/_field.html" with field=pf.license %}
-            </div>
-            <label class="remove">{{ pf.DELETE }} 이 사진을 뺀다</label>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endif %}
-    {% include "occurrences/_field.html" with field=form.new_photos %}
-    {% if not object %}<p class="help muted">사진마다 설명·찍은 이·이용 허락은 넣은 뒤 고치기 화면에서 적는다.</p>{% endif %}
+    {% include "occurrences/_photo_edit.html" %}
   </fieldset>
 
   <fieldset>
@@ -85,4 +73,19 @@
 <script src="{% static 'occurrences/vendor/ol.js' %}"></script>
 <script src="{% static 'occurrences/basemaps.js' %}?v={{ version }}"></script>
 <script src="{% static 'occurrences/pickmap.js' %}?v={{ version }}"></script>
+<script>
+  (function () {
+    const sample = document.getElementById('id_sample');
+    function updateSource() {
+      const linked = Boolean(sample.value);
+      document.querySelectorAll('[data-standalone-fields]').forEach(function (section) {
+        section.hidden = linked;
+        section.disabled = linked;
+      });
+      document.getElementById('sample-source-note').hidden = !linked;
+    }
+    sample.addEventListener('change', updateSource);
+    updateSource();
+  })();
+</script>
 {% endblock %}

@@ -4,31 +4,40 @@
 {% block head %}<link rel="stylesheet" href="{% static 'occurrences/vendor/ol.css' %}">{% endblock %}
 {% block content %}
 <h2><i>{{ object.taxon.scientific_name }}</i> <span class="muted">{{ object.taxon.authorship }} · 산출 #{{ object.pk }}</span></h2>
+{% if object.sample_id %}
+<p><a href="{% url 'occurrences:site_detail' object.source_site.pk %}">{{ object.source_site.name }}</a> / <a href="{% url 'occurrences:event_detail' object.source_event.pk %}">채집 #{{ object.source_event.pk }}</a> / <a href="{% url 'occurrences:sample_detail' object.sample_id %}">{{ object.sample.sample_code }}</a></p>
+<p class="muted">자리·채집일·채집자는 연결한 채집지와 채집 정보에서 가져온다.</p>
+{% endif %}
 
 <div class="detail">
   <div class="card">
     <h3>자리</h3>
     <dl class="fields">
-      <dt>위도 · 경도</dt><dd>{{ object.decimal_latitude }}, {{ object.decimal_longitude }}</dd>
-      {% if object.coordinate_uncertainty_m is not None %}<dt>좌표 불확도</dt><dd>{{ object.coordinate_uncertainty_m }} m</dd>{% endif %}
-      {% if object.country %}<dt>나라</dt><dd>{{ object.country }}</dd>{% endif %}
-      {% if object.locality %}<dt>산지</dt><dd>{{ object.locality }}</dd>{% endif %}
-      {% if object.habitat %}<dt>서식지</dt><dd>{{ object.habitat }}</dd>{% endif %}
-      {% if object.elevation_m is not None %}<dt>고도</dt><dd>{{ object.elevation_m }} m</dd>{% endif %}
+      <dt>위도 · 경도</dt><dd>{{ object.effective_latitude }}, {{ object.effective_longitude }}</dd>
+      {% if object.effective_uncertainty is not None %}<dt>좌표 불확도</dt><dd>{{ object.effective_uncertainty }} m</dd>{% endif %}
+      {% if object.effective_country %}<dt>나라</dt><dd>{{ object.effective_country }}</dd>{% endif %}
+      {% if object.effective_locality %}<dt>산지</dt><dd>{{ object.effective_locality }}</dd>{% endif %}
+      {% if object.effective_habitat %}<dt>서식지</dt><dd>{{ object.effective_habitat }}</dd>{% endif %}
+      {% if not object.sample_id and object.elevation_m is not None %}<dt>고도</dt><dd>{{ object.elevation_m }} m</dd>{% endif %}
     </dl>
     <h3>채집 · 출처</h3>
     <dl class="fields">
       <dt>분류군</dt><dd><i>{{ object.taxon.scientific_name }}</i> {{ object.taxon.authorship }} · {{ object.taxon.get_rank_display }}</dd>
       <dt>기록 근거</dt><dd>{{ object.get_basis_of_record_display }}</dd>
-      {% if object.event_date %}<dt>채집일</dt><dd>{{ object.event_date|date:"Y-m-d" }}</dd>{% endif %}
-      {% if object.recorded_by %}<dt>채집자</dt><dd>{{ object.recorded_by }}</dd>{% endif %}
+      {% if object.effective_event_date %}<dt>채집일</dt><dd>{{ object.effective_event_date|date:"Y-m-d" }}</dd>{% endif %}
+      {% if object.source_event.event_date_verbatim %}<dt>채집일 원문</dt><dd>{{ object.source_event.event_date_verbatim }}</dd>{% endif %}
+      {% if object.effective_recorded_by %}<dt>채집자</dt><dd>{{ object.effective_recorded_by }}</dd>{% endif %}
+      {% if object.individual_count %}<dt>개체 수</dt><dd>{{ object.individual_count }}</dd>{% endif %}
+      {% if object.identified_by %}<dt>동정자</dt><dd>{{ object.identified_by }}</dd>{% endif %}
+      {% if object.identification_qualifier %}<dt>동정 한정어</dt><dd>{{ object.identification_qualifier }}</dd>{% endif %}
       {% if object.reference %}<dt>출처 문헌</dt><dd>{{ object.reference }}</dd>{% endif %}
+      {% if object.source_event.reference %}<dt>채집 출처 문헌</dt><dd>{{ object.source_event.reference }}</dd>{% endif %}
       {% if object.remarks %}<dt>비고</dt><dd>{{ object.remarks }}</dd>{% endif %}
       <dt>넣은 때</dt><dd>{{ object.created_at|date:"Y-m-d H:i" }}</dd>
       <dt>고친 때</dt><dd>{{ object.updated_at|date:"Y-m-d H:i" }}</dd>
     </dl>
   </div>
-  <div id="minimap" class="minimap" data-lat="{{ object.decimal_latitude|stringformat:'s' }}" data-lon="{{ object.decimal_longitude|stringformat:'s' }}"></div>
+  <div id="minimap" class="minimap" data-lat="{{ object.effective_latitude|stringformat:'s' }}" data-lon="{{ object.effective_longitude|stringformat:'s' }}"></div>
 </div>
 
 {% with photos=object.photos.all %}
@@ -51,7 +60,7 @@
 
 <div class="actions">
   <a class="button" href="{% url 'occurrences:update' object.pk %}">고치기</a>
-  <a class="button secondary" href="{% url 'occurrences:create' %}?taxon={{ object.taxon_id }}">같은 분류군으로 새 산출</a>
+  <a class="button secondary" href="{% url 'occurrences:create' %}?taxon={{ object.taxon_id }}{% if object.sample_id %}&amp;sample={{ object.sample_id }}{% endif %}">같은 분류군으로 새 산출</a>
   <a class="button danger" href="{% url 'occurrences:delete' object.pk %}" style="margin-left:auto">지우기</a>
 </div>
 <p><a href="{% url 'occurrences:list' %}">← 산출 목록</a> · <a href="{% url 'occurrences:list' %}?taxon={{ object.taxon_id }}"><i>{{ object.taxon.scientific_name }}</i> 의 산출만 보기</a></p>

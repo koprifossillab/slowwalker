@@ -1,0 +1,26 @@
+{% extends "occurrences/base.html" %}
+{% block title %}채집 #{{ object.pk }} · {{ object.site.name }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'occurrences:site_detail' object.site_id %}">← {{ object.site.name }}</a></p>
+<h2>{% if object.event_date %}{{ object.event_date|date:"Y-m-d" }}{% else %}{{ object.event_date_verbatim|default:'날짜 미상' }}{% endif %} · 채집 #{{ object.pk }}</h2>
+<div class="actions">
+  <a class="button" href="{% url 'occurrences:sample_create' %}?event={{ object.pk }}">이 채집에 시료 추가</a>
+  <a class="button secondary" href="{% url 'occurrences:event_update' object.pk %}">채집 고치기</a>
+</div>
+<section class="card"><dl class="fields">
+  <dt>채집지</dt><dd><a href="{% url 'occurrences:site_detail' object.site_id %}">{{ object.site.name }}</a></dd>
+  <dt>채집자</dt><dd>{{ object.recorded_by|default:'미기록' }}</dd>
+  {% if object.event_date_verbatim %}<dt>채집일 원문</dt><dd>{{ object.event_date_verbatim }}</dd>{% endif %}
+  {% if object.sampling_protocol %}<dt>채집 방법</dt><dd>{{ object.sampling_protocol|linebreaksbr }}</dd>{% endif %}
+  {% if object.sampling_effort %}<dt>채집 노력량</dt><dd>{{ object.sampling_effort }}</dd>{% endif %}
+  {% if object.reference %}<dt>출처 문헌</dt><dd>{{ object.reference|linebreaksbr }}</dd>{% endif %}
+  {% if object.remarks %}<dt>비고</dt><dd>{{ object.remarks|linebreaksbr }}</dd>{% endif %}
+</dl></section>
+<h3>시료 {{ object.samples.all|length }}건</h3>
+{% for sample in object.samples.all %}<section class="card">
+  <h3><a href="{% url 'occurrences:sample_detail' sample.pk %}">{{ sample.sample_code }}</a></h3>
+  <p>{{ sample.substrate|default:'기질 미기록' }}{% if sample.host_taxon %} · <i>{{ sample.host_taxon }}</i>{% endif %}</p>
+  {% for occ in sample.occurrences.all %}<p><a href="{% url 'occurrences:detail' occ.pk %}"><i>{{ occ.taxon.scientific_name }}</i></a>{% if occ.individual_count %} · {{ occ.individual_count }}개체{% endif %}</p>{% empty %}<p class="muted">산출 미등록</p>{% endfor %}
+  <a href="{% url 'occurrences:create' %}?sample={{ sample.pk }}">산출 추가</a>
+</section>{% empty %}<p class="muted">아직 시료가 없다.</p>{% endfor %}
+{% endblock %}

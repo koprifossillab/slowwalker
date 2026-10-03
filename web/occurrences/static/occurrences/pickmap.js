@@ -12,6 +12,7 @@
   const latInput = el.dataset.latInput && document.getElementById(el.dataset.latInput);
   const lonInput = el.dataset.lonInput && document.getElementById(el.dataset.lonInput);
   const picking = Boolean(latInput && lonInput);
+  const maxMapLatitude = 85.0511287798066;
 
   const point = new ol.Feature();
   const map = new ol.Map({
@@ -32,6 +33,19 @@
     view: new ol.View({ center: [0, 2000000], zoom: 1, minZoom: 1 }),
   });
 
+  // 극지 좌표를 지도 가장자리로 옮겨 보이지 않는다. 원래 좌표는 입력 칸과 기록에 남긴다.
+  const projectionNote = document.createElement("div");
+  projectionNote.setAttribute("role", "status");
+  projectionNote.textContent = "위도 ±85.05°를 넘는 채집지는 이 2D 지도에 표시되지 않습니다. 기록의 위·경도는 그대로 보존됩니다.";
+  projectionNote.hidden = true;
+  Object.assign(projectionNote.style, {
+    position: "absolute", left: "52px", right: "12px", top: "12px", zIndex: "2",
+    padding: "10px 12px", borderRadius: "6px", background: "rgba(255,255,255,.96)",
+    color: "#33424a", fontSize: "13px", lineHeight: "1.5", pointerEvents: "none",
+  });
+  el.style.position = "relative";
+  el.appendChild(projectionNote);
+
   /** 위경도가 둘 다 맞는 숫자면 [경도, 위도], 아니면 null. */
   function lonLat(lat, lon) {
     lat = parseFloat(lat);
@@ -42,7 +56,9 @@
   }
 
   function show(ll, zoomTo) {
-    if (!ll) {
+    const outsideProjection = Boolean(ll && Math.abs(ll[1]) > maxMapLatitude);
+    projectionNote.hidden = !outsideProjection;
+    if (!ll || outsideProjection) {
       point.setGeometry(undefined);
       return;
     }

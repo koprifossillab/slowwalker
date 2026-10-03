@@ -8,14 +8,16 @@
 {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}page{% endblock %}">
+{% block header %}
 <header id="bar">
   <h1><a href="{% url 'occurrences:map' %}">slowwalker</a></h1>
   <nav>
     <a href="{% url 'occurrences:map' %}"{% if request.resolver_match.url_name == 'map' %} aria-current="page"{% endif %}>지도</a>
     <a href="{% url 'occurrences:list' %}"{% if request.resolver_match.url_name == 'list' %} aria-current="page"{% endif %}>산출 목록</a>
-    <a href="{% url 'occurrences:create' %}"{% if request.resolver_match.url_name == 'create' %} aria-current="page"{% endif %}>새 산출</a>
+    <a href="{% url 'occurrences:site_create' %}"{% if request.resolver_match.url_name == 'site_create' %} aria-current="page"{% endif %}>채집지 추가</a>
   </nav>
   {% block bar %}{% endblock %}
+  {% if preview_notice %}<span class="preview-badge">{{ preview_notice }}</span>{% endif %}
   <div class="right">
     {% block bar_right %}{% endblock %}
     {% if user.is_authenticated %}
@@ -28,6 +30,7 @@
     <span class="ver">v{{ version }}</span>
   </div>
 </header>
+{% endblock %}
 {% block main %}
 <main class="sheet">
   {% if messages %}

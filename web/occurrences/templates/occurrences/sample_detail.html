@@ -1,0 +1,24 @@
+{% extends "occurrences/base.html" %}
+{% block title %}{{ object.sample_code }} · 시료{% endblock %}
+{% block content %}
+<p><a href="{% url 'occurrences:site_detail' object.event.site_id %}">{{ object.event.site.name }}</a> / <a href="{% url 'occurrences:event_detail' object.event_id %}">채집 #{{ object.event_id }}</a> / 시료</p>
+<h2>{{ object.sample_code }}</h2>
+<div class="actions">
+  <a class="button" href="{% url 'occurrences:create' %}?sample={{ object.pk }}">이 시료에 완보동물 산출 추가</a>
+  <a class="button secondary" href="{% url 'occurrences:sample_update' object.pk %}">시료 고치기</a>
+</div>
+<section class="card"><dl class="fields">
+  <dt>채집일</dt><dd>{% if object.event.event_date %}{{ object.event.event_date|date:"Y-m-d" }}{% else %}{{ object.event.event_date_verbatim|default:'미기록' }}{% endif %}</dd>
+  <dt>채집자</dt><dd>{{ object.event.recorded_by|default:'미기록' }}</dd>
+  <dt>채집 기질</dt><dd>{{ object.substrate|default:'미기록' }}</dd>
+  {% if object.host_taxon %}<dt>숙주·기질 생물 학명</dt><dd><i>{{ object.host_taxon }}</i></dd>{% endif %}
+  {% if object.description %}<dt>시료 설명</dt><dd>{{ object.description|linebreaksbr }}</dd>{% endif %}
+</dl></section>
+{% include "occurrences/_gallery.html" with photos=object.photos.all gallery_title="시료 사진" %}
+<h3>완보동물 산출 {{ object.occurrences.all|length }}건</h3>
+{% for occ in object.occurrences.all %}<section class="card">
+  <h3><a href="{% url 'occurrences:detail' occ.pk %}"><i>{{ occ.taxon.scientific_name }}</i></a> {{ occ.identification_qualifier }}</h3>
+  <p>{% if occ.individual_count %}{{ occ.individual_count }}개체{% else %}개체 수 미기록{% endif %}{% if occ.identified_by %} · 동정: {{ occ.identified_by }}{% endif %}</p>
+  {% include "occurrences/_gallery.html" with photos=occ.photos.all gallery_title="산출 사진" %}
+</section>{% empty %}<p class="muted">아직 산출을 등록하지 않았다. 산출 미등록은 종이 없었다는 뜻이 아니다.</p>{% endfor %}
+{% endblock %}

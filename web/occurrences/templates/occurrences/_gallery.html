@@ -1,0 +1,13 @@
+{% if photos %}
+<section class="card gallery-card">
+  <h3>{{ gallery_title|default:'사진' }} {{ photos|length }}장</h3>
+  <div class="gallery">
+  {% for ph in photos %}
+    <figure>
+      <a href="{{ ph.image.url }}" target="_blank" rel="noopener"><img src="{% if ph.thumbnail %}{{ ph.thumbnail.url }}{% else %}{{ ph.image.url }}{% endif %}" alt="{{ ph.description|default:'사진' }}" loading="lazy"></a>
+      <figcaption>{{ ph.description }}{% if ph.creator %} · {{ ph.creator }}{% endif %}{% if ph.license %} · {{ ph.license }}{% endif %}</figcaption>
+    </figure>
+  {% endfor %}
+  </div>
+</section>
+{% endif %}

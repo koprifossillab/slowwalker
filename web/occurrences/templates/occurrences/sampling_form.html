@@ -1,0 +1,66 @@
+{% extends "occurrences/base.html" %}
+{% load static %}
+{% block title %}{{ entity_label }} {% if object %}고치기{% else %}등록{% endif %}{% endblock %}
+{% block head %}{% if is_site %}<link rel="stylesheet" href="{% static 'occurrences/vendor/ol.css' %}">{% endif %}{% endblock %}
+{% block content %}
+<p class="muted"><a href="{% url 'occurrences:map' %}">지도</a> / 채집지 → 채집 → 시료 → 산출</p>
+<h2>{{ entity_label }} {% if object %}고치기{% else %}등록{% endif %}</h2>
+{% if is_site %}<p class="muted">한 채집지를 등록한 뒤, 날짜와 채집자가 다른 여러 채집을 연결할 수 있다.</p>{% endif %}
+{% if is_event %}<p class="muted">한 번의 채집을 기록한다. 시료는 다음 화면에서 추가한다.</p>{% endif %}
+{% if is_sample %}<p class="muted">채집한 따개비·이끼 등 시료를 기록한다. 나온 완보동물은 저장 후 산출로 추가한다.</p>{% endif %}
+<form class="edit" method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}{{ form.non_field_errors }}
+  {% if is_site %}
+  <fieldset><legend>채집지</legend>
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.name %}
+      {% include "occurrences/_field.html" with field=form.realm %}
+    </div>
+    <div id="minimap" class="minimap pick" data-lat-input="{{ form.decimal_latitude.id_for_label }}" data-lon-input="{{ form.decimal_longitude.id_for_label }}"></div>
+    <p class="help muted">지도를 누르거나 위도·경도를 직접 입력한다. 확실하지 않은 좌표는 불확도를 함께 기록한다.</p>
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.decimal_latitude %}
+      {% include "occurrences/_field.html" with field=form.decimal_longitude %}
+      {% include "occurrences/_field.html" with field=form.coordinate_uncertainty_m %}
+      {% include "occurrences/_field.html" with field=form.country %}
+    </div>
+    {% include "occurrences/_field.html" with field=form.locality %}
+    {% include "occurrences/_field.html" with field=form.habitat %}
+    {% include "occurrences/_field.html" with field=form.remarks %}
+  </fieldset>
+  {% elif is_event %}
+  <fieldset><legend>채집 정보</legend>
+    {% include "occurrences/_field.html" with field=form.site %}
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.event_date %}
+      {% include "occurrences/_field.html" with field=form.event_date_verbatim %}
+    </div>
+    {% include "occurrences/_field.html" with field=form.recorded_by %}
+    {% include "occurrences/_field.html" with field=form.sampling_protocol %}
+    {% include "occurrences/_field.html" with field=form.sampling_effort %}
+    {% include "occurrences/_field.html" with field=form.reference %}
+    {% include "occurrences/_field.html" with field=form.remarks %}
+  </fieldset>
+  {% else %}
+  <fieldset><legend>시료 정보</legend>
+    {% include "occurrences/_field.html" with field=form.event %}
+    {% include "occurrences/_field.html" with field=form.sample_code %}
+    <div class="grid2">
+      {% include "occurrences/_field.html" with field=form.substrate %}
+      {% include "occurrences/_field.html" with field=form.host_taxon %}
+    </div>
+    {% include "occurrences/_field.html" with field=form.description %}
+  </fieldset>
+  {% endif %}
+  {% if form.new_photos %}<fieldset><legend>{{ entity_label }} 사진</legend>{% include "occurrences/_photo_edit.html" %}</fieldset>{% endif %}
+  <div class="actions">
+    <button type="submit" class="button">저장{% if not object %}하고 계속{% endif %}</button>
+    <a href="{% url 'occurrences:map' %}">지도로 돌아가기</a>
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}{% if is_site %}
+<script src="{% static 'occurrences/vendor/ol.js' %}"></script>
+<script src="{% static 'occurrences/basemaps.js' %}?v={{ version }}"></script>
+<script src="{% static 'occurrences/pickmap.js' %}?v={{ version }}"></script>
+{% endif %}{% endblock %}

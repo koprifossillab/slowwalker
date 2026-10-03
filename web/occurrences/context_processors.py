@@ -5,4 +5,5 @@ from slowwalkerweb.version import VERSION
 
 
 def site(request):
-    return {"version": VERSION, "edit_requires_login": settings.EDIT_REQUIRES_LOGIN}
+    return {"version": VERSION, "edit_requires_login": settings.EDIT_REQUIRES_LOGIN,
+            "preview_notice": settings.PREVIEW_NOTICE}

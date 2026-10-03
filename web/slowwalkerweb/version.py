@@ -3,4 +3,4 @@
 `CHANGELOG.md` 의 맨 위 판과 **손으로 맞춘다** (GSM 과 같다).
 """
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"

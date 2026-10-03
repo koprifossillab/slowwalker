@@ -28,24 +28,33 @@
 ## 자료의 층
 
 ```
-분류군   Taxon       parent 로 위아래를 잇는다
- └ 산출   Occurrence  위경도 하나 + 산지·서식지·채집일·출처
-    └ 사진 Photo     여러 장. 파일은 web/media/photos/<산출 번호>/, 섬네일은 그 아래 thumbs/
+채집지 Site                 산지·위경도·환경 구분·서식지
+ └ 채집 CollectionEvent     날짜·채집자·방법·노력량·출처
+    └ 시료 Sample           시료 번호·기질·숙주 학명
+       └ 산출 Occurrence    분류군·개체 수·동정 정보·산출 출처
+분류군 Taxon                parent 로 위아래를 잇는다
+사진 Photo                  채집지·시료·산출 중 한 곳에만 연결한다
 ```
+
+기존 단독 산출은 시료 없이 자체 좌표와 채집 정보를 유지한다. 시료에 연결한 산출은
+채집지와 채집의 정보를 참조하며, 좌표가 같다는 이유로 기록을 자동 병합하지 않는다.
+산출 사진의 기존 `photos/<산출 번호>/` 경로를 유지하고, 새 부모의 사진은
+`photos/sites/<번호>/` 또는 `photos/samples/<번호>/` 아래에 둔다.
+좌표를 입력할 때는 WGS84 경위도를 쓴다. 날짜나 개체 수를 모르면 임의로 채우지 않는다.
 
 ## 구조
 
 ```
 web/slowwalkerweb/   Django 설정 (settings·urls·version)
 web/occurrences/     앱 하나뿐이다
-  models.py          분류군·산출·사진 (섬네일을 만들고, 지우면 파일도 지운다)
-  forms.py           산출·분류군 양식, 사진 여러 장 받기 (검사는 모델의 것)
-  views.py           지도 화면, 산출 GeoJSON, 산출 목록·자세히·넣기·고치기·지우기, 새 분류군, healthz
+  models.py          채집지·채집·시료·분류군·산출·사진
+  forms.py           자료 입력·수정 양식, 사진 여러 장 받기 (검사는 모델의 것)
+  views.py           지도·GeoJSON·상세 JSON, 자료 입력·수정·상세, 산출 목록·삭제, healthz
   templates/occurrences/
     base.html        모든 화면의 머리줄
   static/occurrences/
     basemaps.js      배경지도(EOX) — 세계지도와 작은 지도가 함께 쓴다
-    map.js           OpenLayers 로 점을 그린다
+    map.js           OpenLayers 지도, 점 선택·검색·상세 패널·채집지 추가
     pickmap.js       자세히·입력 화면의 작은 지도 (눌러서 위경도를 고른다)
     vendor/          OpenLayers 9.2.4 (GSM 과 같은 파일)
   tests/

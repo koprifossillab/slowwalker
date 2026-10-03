@@ -26,12 +26,12 @@
     <tr>
       <td class="num"><a href="{% url 'occurrences:detail' o.pk %}">{{ o.pk }}</a></td>
       <td class="taxon"><a href="{% url 'occurrences:detail' o.pk %}">{{ o.taxon.scientific_name }}</a></td>
-      <td>{{ o.country }}</td>
-      <td class="wrap">{{ o.locality }}</td>
-      <td>{{ o.habitat }}</td>
-      <td class="num">{{ o.decimal_latitude }}</td>
-      <td class="num">{{ o.decimal_longitude }}</td>
-      <td>{{ o.event_date|date:"Y-m-d" }}</td>
+      <td>{{ o.effective_country }}</td>
+      <td class="wrap">{{ o.effective_locality }}</td>
+      <td>{{ o.effective_habitat }}</td>
+      <td class="num">{{ o.effective_latitude }}</td>
+      <td class="num">{{ o.effective_longitude }}</td>
+      <td>{% if o.effective_event_date %}{{ o.effective_event_date|date:"Y-m-d" }}{% else %}{{ o.source_event.event_date_verbatim }}{% endif %}</td>
       <td>{{ o.get_basis_of_record_display }}</td>
     </tr>
   {% endfor %}

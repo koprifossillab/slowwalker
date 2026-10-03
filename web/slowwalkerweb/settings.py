@@ -124,6 +124,9 @@ MAX_PHOTO_MB = env_int("SLOWWALKER_MAX_PHOTO_MB", 20)
 # 밖에 열거나 기록이 쌓이면 1 로 켠다. 계정은 `createsuperuser` 나 관리 화면에서 만든다
 EDIT_REQUIRES_LOGIN = env_bool("SLOWWALKER_EDIT_REQUIRES_LOGIN", False)
 
+# 예시 자료가 든 별도 검토 화면에서만 표시한다. 연구 자료 화면의 기본값은 빈 글이다.
+PREVIEW_NOTICE = env("SLOWWALKER_PREVIEW_NOTICE", "")
+
 # 로그인 화면의 이름. 접두사(`URL_PREFIX`)는 urls.py 가 붙인다
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "occurrences:list"

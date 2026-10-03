@@ -1,0 +1,22 @@
+{% if photo_formset %}
+  {{ photo_formset.management_form }}
+  {{ photo_formset.non_form_errors }}
+  <div class="photo-edit">
+    {% for pf in photo_formset %}
+    <div class="photo-row">
+      {{ pf.id }}{{ pf.non_field_errors }}{{ pf.id.errors }}
+      {% if pf.instance.image %}<a href="{{ pf.instance.image.url }}" target="_blank" rel="noopener"><img src="{% if pf.instance.thumbnail %}{{ pf.instance.thumbnail.url }}{% else %}{{ pf.instance.image.url }}{% endif %}" alt="{{ pf.instance.description|default:'사진' }}" loading="lazy"></a>{% endif %}
+      <div class="photo-fields">
+        {% include "occurrences/_field.html" with field=pf.description %}
+        <div class="grid2">
+          {% include "occurrences/_field.html" with field=pf.creator %}
+          {% include "occurrences/_field.html" with field=pf.license %}
+        </div>
+        <label class="remove">{{ pf.DELETE }} 이 사진을 뺀다</label>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% include "occurrences/_field.html" with field=form.new_photos %}
+{% if not object %}<p class="help muted">사진 설명·찍은 이·이용 허락은 저장 후 고치기 화면에서 적는다.</p>{% endif %}
