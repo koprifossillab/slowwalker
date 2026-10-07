@@ -59,6 +59,11 @@ devlog/              판단과 근거
 
 `web/slowwalkerweb/version.py` 와 `CHANGELOG.md` 맨 위 판을 손으로 맞춘다.
 
+## 공통 규약 (kopri-devdocs guides)
+
+형제 저장소들이 같은 사고를 겪고 도달한 규약은 `.guides/` 에 있다 — 지도 뷰어 갈래(상류마다 문 하나·키는 브라우저로 안 나간다·캐시 순위·이용 조건과 연구실 내부용·정적 공개판)는 `.guides/web/map-viewers.md`, 배포·데이터 안전·운영(옛 이미지 정리 포함)은 `.guides/web/README.md`, 브랜치·판 세션·병렬 Claude 세션·devlog 는 `.guides/workflow.md`.
+**없으면 kopri-devdocs 클론이 안 걸린 것이다** — `../kopri-devdocs` 를 형제로 두고 `ln -s ../kopri-devdocs/guides .guides`. 이 저장소에는 커밋하지 않는다(kopri-devdocs 는 private, `.gitignore` 에 있다).
+
 ## 커밋과 PR
 
 GSM 과 같다 — 기능마다 `feature/<영어-kebab>` 브랜치, 메시지는 한국어로 무엇을 했는지 쓰고 끝에

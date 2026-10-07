@@ -24,3 +24,6 @@ venv/
 
 # Claude Code 의 작업 자리 (에이전트 worktree 등)
 /.claude/
+
+# ../kopri-devdocs/guides 로 가는 심볼릭 링크 — kopri-devdocs 는 private 이라 커밋하지 않는다 (CLAUDE.md "공통 규약")
+.guides
